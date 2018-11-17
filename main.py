@@ -28,7 +28,9 @@ class MyGame(arcade.Window):
 
     def setup(self):
         #set up game here
-        pass
+        self.ball = arcade.Sprite('images/soccer-ball.png', .1)
+        self.ball.center_x = screen_w / 2
+        self.ball.center_y = screen_h / 3
 
     def on_draw(self):
         #render the screen
@@ -39,6 +41,7 @@ class MyGame(arcade.Window):
         draw_grass()
         draw_goal(150, 400, 20, 320)
         draw_goal(screen_w - 150, 400, screen_w - 20, 320)
+        self.ball.draw()
 
         for snowflake in self.snowflake_list:
             arcade.draw_circle_filled(snowflake.x, snowflake.y, snowflake.size,
@@ -57,6 +60,11 @@ class MyGame(arcade.Window):
             #move side to side
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
+        if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 25 or
+            self.ball.center_x > screen_w -10 or self.ball.center_x <5):
+            pass
+        else:
+            self.ball.center_y -= 5
 #BACKGROUND
 grass_height = screen_h / 4
 
