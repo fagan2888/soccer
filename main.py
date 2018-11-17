@@ -31,6 +31,7 @@ class MyGame(arcade.Window):
         self.ball = arcade.Sprite('images/soccer-ball.png', .1)
         self.ball.center_x = screen_w / 2
         self.ball.center_y = screen_h / 3
+        self.ball.change_y = -10
 
         #PLAYERS
         start_height = screen_h / 3
@@ -38,24 +39,23 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.player1 = arcade.Sprite('kenney/PNG/Player/Poses/player_stand.png', 1.2)
         self.player1.center_x = screen_w / 4
-        self.player1.center_y = start_height
         self.player_list.append(self.player1)
         #Player 2
         self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
         self.player2.center_x = screen_w / 4 + 100
-        self.player2.center_y = start_height
         self.player_list.append(self.player2)
         #Player 3
-        self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand.png', 1.2)
+        self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
         self.player3.center_x = 3 * screen_w / 4
-        self.player3.center_y = start_height
         self.player_list.append(self.player3)
         #Player 4
-        self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand.png', 1.2)
+        self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 1.2)
         self.player4.center_x = 3 * screen_w / 4 - 100
-        self.player4.center_y = start_height
         self.player_list.append(self.player4)
 
+        for player in self.player_list:
+            player.center_y = start_height
+            player.change_y = -10
 
     def on_draw(self):
         #render the screen
@@ -74,6 +74,16 @@ class MyGame(arcade.Window):
             arcade.draw_circle_filled(snowflake.x, snowflake.y, snowflake.size,
                 arcade.color.WHITE)
 
+    def on_key_press(self, key, modifiers):
+        #called whenever key is pressed
+        if key == arcade.key.UP:
+            for player in self.player_list:
+                player.change_y = 10
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.UP:
+            for player in self.player_list:
+                player.change_y = -10
+
     def update(self, delta_time):
         #game logic
         #animate snowflakes falling
@@ -86,11 +96,15 @@ class MyGame(arcade.Window):
             #move side to side
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
-        if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 25 or
+        self.ball.update()
+        if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40 or
             self.ball.center_x > screen_w -10 or self.ball.center_x <5):
-            pass
-        else:
-            self.ball.center_y -= 5
+            self.ball.change_y = 0
+        self.player_list.update()
+        for player in self.player_list:
+            if player.center_y <= 80:
+                player.change_y = 0
+                player.center_y = 80
 #BACKGROUND
 grass_height = screen_h / 4
 
