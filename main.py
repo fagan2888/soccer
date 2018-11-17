@@ -39,8 +39,10 @@ class MyGame(arcade.Window):
         #screen to background color and erase what was drawn
         draw_sky()
         draw_grass()
-        draw_goal(150, 400, 20, 320)
-        draw_goal(screen_w - 150, 400, screen_w - 20, 320)
+        # draw_goal(150, 320, 20, 320)
+        # draw_goal(screen_w - 150, 320, screen_w - 20, 320)
+        square_goal(20, 320)
+        square_goal(screen_w - 160, 320)
         self.ball.draw()
 
         for snowflake in self.snowflake_list:
@@ -86,20 +88,26 @@ class Snowflake:
         self.x = random.randrange(screen_w)
         self.y = random.randrange(screen_h, screen_h + 100)
 
-#GOAL
-def draw_goal(front_high_x, front_high_y, back_high_x, back_high_y):
+#SQUARE GOAL
+def square_goal(top_left_x, top_left_y):
     #top part of goal
-    arcade.draw_commands.draw_line(front_high_x, front_high_y, back_high_x, back_high_y,
-            arcade.color.BLUE_SAPPHIRE, 5)
+    arcade.draw_commands.draw_line(top_left_x, top_left_y, top_left_x + 140,
+            top_left_y, arcade.color.BLUE_SAPPHIRE, 5)
     #back side of goal
-    arcade.draw_commands.draw_line(back_high_x, back_high_y, back_high_x, back_high_y - 300,
-            arcade.color.BLUE_SAPPHIRE, 5)
+    arcade.draw_commands.draw_line(top_left_x, top_left_y, top_left_x,
+            top_left_y - 300, arcade.color.BLUE_SAPPHIRE, 5)
     #front side of goal
-    arcade.draw_commands.draw_line(front_high_x, front_high_y, front_high_x, back_high_y - 300,
-            arcade.color.BLUE_SAPPHIRE, 5)
-    #bottom of goal
-    arcade.draw_commands. draw_line(front_high_x, back_high_y - 300, back_high_x, back_high_y - 300,
-            arcade.color.BLUE_SAPPHIRE, 5)
+    arcade.draw_commands.draw_line(top_left_x + 140, top_left_y, top_left_x + 140,
+            top_left_y - 300, arcade.color.BLUE_SAPPHIRE, 5)
+    #bottom side of goal
+    arcade.draw_commands.draw_line(top_left_x, top_left_y - 300, top_left_x + 140,
+            top_left_y - 300, arcade.color.BLUE_SAPPHIRE, 5)
+    for num in range(1, 140 // 20):
+        arcade.draw_commands.draw_line(top_left_x + num * 20, top_left_y, top_left_x + num * 20,
+                top_left_y - 300, arcade.color.WHITE, 2)
+    for num in range(2, 300 // 20 + 1):
+        arcade.draw_commands.draw_line(top_left_x, num * 20, top_left_x + 140,
+                num * 20, arcade.color.WHITE, 2)
 
 def main():
     game = MyGame(screen_w, screen_h)
