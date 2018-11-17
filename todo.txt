@@ -1,0 +1,10 @@
+soccer physics - multiplayer
+implement soccer physics game and physics of players and ball with arcade module
+
+multiplayer aspect:
+player 1 is the host - player 2 connects to player 1's port via ip
+
+maybe use https://github.com/chr15m/PodSixNet/?
+
+both players can control their individual players separately? need better multiplayer
+mechanics

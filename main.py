@@ -105,6 +105,7 @@ class MyGame(arcade.Window):
             if player.center_y <= 80:
                 player.change_y = 0
                 player.center_y = 80
+
 #BACKGROUND
 grass_height = screen_h / 4
 
