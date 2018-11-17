@@ -5,9 +5,9 @@ screen_w, screen_h = 1000, 600
 class MyGame(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
-        # arcade.set_background_color(arcade.color.AMAZON)
-
         #create sprite lists here and set to None
+        self.player_list = None
+        #set up player info
     def start_snowfall(self):
         self.snowflake_list = []
         for i in range(100):
@@ -32,23 +32,47 @@ class MyGame(arcade.Window):
         self.ball.center_x = screen_w / 2
         self.ball.center_y = screen_h / 3
 
+        #PLAYERS
+        start_height = screen_h / 3
+        #Player 1
+        self.player_list = arcade.SpriteList()
+        self.player1 = arcade.Sprite('kenney/PNG/Player/Poses/player_stand.png', 1.2)
+        self.player1.center_x = screen_w / 4
+        self.player1.center_y = start_height
+        self.player_list.append(self.player1)
+        #Player 2
+        self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
+        self.player2.center_x = screen_w / 4 + 100
+        self.player2.center_y = start_height
+        self.player_list.append(self.player2)
+        #Player 3
+        self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand.png', 1.2)
+        self.player3.center_x = 3 * screen_w / 4
+        self.player3.center_y = start_height
+        self.player_list.append(self.player3)
+        #Player 4
+        self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand.png', 1.2)
+        self.player4.center_x = 3 * screen_w / 4 - 100
+        self.player4.center_y = start_height
+        self.player_list.append(self.player4)
+
+
     def on_draw(self):
         #render the screen
         arcade.start_render()
-        #command should initiate before we start drawing - it will clear the
+        #render should initiate before we start drawing - it will clear the
         #screen to background color and erase what was drawn
         draw_sky()
         draw_grass()
-        # draw_goal(150, 320, 20, 320)
-        # draw_goal(screen_w - 150, 320, screen_w - 20, 320)
         square_goal(20, 320)
         square_goal(screen_w - 160, 320)
+        #now call draw on all sprite lists
         self.ball.draw()
-
+        for player in self.player_list:
+            player.draw()
         for snowflake in self.snowflake_list:
             arcade.draw_circle_filled(snowflake.x, snowflake.y, snowflake.size,
                 arcade.color.WHITE)
-        #now call draw on all sprite lists
 
     def update(self, delta_time):
         #game logic
