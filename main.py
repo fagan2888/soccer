@@ -1,6 +1,5 @@
 import arcade, math, random
 
-
 screen_w, screen_h = 1000, 600
 
 class MyGame(arcade.Window):
@@ -38,6 +37,9 @@ class MyGame(arcade.Window):
         #screen to background color and erase what was drawn
         draw_sky()
         draw_grass()
+        draw_goal(150, 400, 20, 320)
+        draw_goal(screen_w - 150, 400, screen_w - 20, 320)
+
         for snowflake in self.snowflake_list:
             arcade.draw_circle_filled(snowflake.x, snowflake.y, snowflake.size,
                 arcade.color.WHITE)
@@ -55,7 +57,7 @@ class MyGame(arcade.Window):
             #move side to side
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
-
+#BACKGROUND
 grass_height = screen_h / 4
 
 def draw_sky():
@@ -64,6 +66,7 @@ def draw_sky():
 def draw_grass():
     arcade.draw_lrtb_rectangle_filled(0, screen_w, grass_height, 0, arcade.color.FOREST_GREEN)
 
+#SNOW
 class Snowflake:
     #each instance is a separate Snowflake
     def __init__(self):
@@ -75,6 +78,20 @@ class Snowflake:
         self.x = random.randrange(screen_w)
         self.y = random.randrange(screen_h, screen_h + 100)
 
+#GOAL
+def draw_goal(front_high_x, front_high_y, back_high_x, back_high_y):
+    #top part of goal
+    arcade.draw_commands.draw_line(front_high_x, front_high_y, back_high_x, back_high_y,
+            arcade.color.BLUE_SAPPHIRE, 5)
+    #back side of goal
+    arcade.draw_commands.draw_line(back_high_x, back_high_y, back_high_x, back_high_y - 300,
+            arcade.color.BLUE_SAPPHIRE, 5)
+    #front side of goal
+    arcade.draw_commands.draw_line(front_high_x, front_high_y, front_high_x, back_high_y - 300,
+            arcade.color.BLUE_SAPPHIRE, 5)
+    #bottom of goal
+    arcade.draw_commands. draw_line(front_high_x, back_high_y - 300, back_high_x, back_high_y - 300,
+            arcade.color.BLUE_SAPPHIRE, 5)
 
 def main():
     game = MyGame(screen_w, screen_h)
