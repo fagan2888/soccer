@@ -44,26 +44,40 @@ class MyGame(arcade.Window):
         self.player_list = arcade.SpriteList()
         self.player1 = arcade.Sprite('kenney/PNG/Player/Poses/player_stand.png', 1.2)
         self.player1.center_x = screen_w / 4
+        self.player1.center_y = start_height
+        self.player1.textures = [arcade.load_texture('kenney/PNG/Player/Poses/player_stand.png', 0, 0, 80, 110), \
+                arcade.load_texture('kenney/PNG/Player/Poses/player_kick.png', 0, 0, 80, 110)]
+        self.player1.update_animation = update_animation
         self.player_list.append(self.player1)
         #Player 2
         self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
         self.player2.center_x = screen_w / 4 + 100
+        self.player2.center_y = start_height
+        self.player2.textures = [arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 0, 0, 80, 110), \
+            arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_kick.png', 0, 0, 80, 110)]
+        self.player2.update_animation = update_animation
         self.player_list.append(self.player2)
         #Player 3
         self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
         self.player3.center_x = 3 * screen_w / 4
+        self.player3.center_y = start_height
+        self.player3.textures = [arcade.load_texture('kenney/PNG/Female/Poses/female_stand_rev.png', 0, 0, 80, 110), \
+                arcade.load_texture('kenney/PNG/Female/Poses/female_kick_rev.png', 0, 0, 80, 110)]
+        self.player3.update_animation = update_animation
         self.player_list.append(self.player3)
         #Player 4
         self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 1.2)
         self.player4.center_x = 3 * screen_w / 4 - 100
+        self.player4.center_y = start_height
+        self.player4.textures = [arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 0, 0, 80, 110), \
+                arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_kick_rev.png', 0, 0, 80, 110)]
+        self.player4.update_animation = update_animation
         self.player_list.append(self.player4)
 
         self.physics_list = []
         for player in self.player_list:
-            player.center_y = start_height
             player.change_y = -10
             self.physics_list.append(arcade.PhysicsEnginePlatformer(player, self.player_list , gravity_constant = gravity))
-
 
     def on_draw(self):
         #render the screen
@@ -86,12 +100,13 @@ class MyGame(arcade.Window):
         #called whenever key is pressed
         if key == arcade.key.UP:
             for player in self.player_list:
+                player.update_animation(player,1)
                 player.change_y = jump_speed
 
-    # def on_key_release(self, key, modifiers):
-        # if key == arcade.key.UP:
-        #     for player in self.player_list:
-        #         player.change_y = 0
+    def on_key_release(self, key, modifiers):
+        if key == arcade.key.UP:
+            for player in self.player_list:
+                player.update_animation(player,0)
 
     def update(self, delta_time):
         #game logic
@@ -158,6 +173,10 @@ def square_goal(top_left_x, top_left_y):
     for num in range(2, 300 // 20 + 1):
         arcade.draw_commands.draw_line(top_left_x, num * 20, top_left_x + 140,
                 num * 20, arcade.color.WHITE, 2)
+
+#UPDATE ANIMATION FOR PLAYERS
+def update_animation(self, texture):
+    self.set_texture(texture)
 
 def main():
     game = MyGame(screen_w, screen_h)

@@ -1,7 +1,7 @@
 soccer physics - multiplayer
 implement soccer physics game and physics of players and ball with arcade module
 find a way to switch character images to show motion without lag
-
+implement Sprite.change_angle and Sprite.update_animation
 
 multiplayer aspect:
 player 1 is the host - player 2 connects to player 1's port via ip
