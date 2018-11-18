@@ -2,6 +2,11 @@ import arcade, math, random
 
 screen_w, screen_h = 1000, 600
 
+#Physics
+movement_speed = 5
+jump_speed = 6
+gravity = .5
+
 class MyGame(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
@@ -53,9 +58,12 @@ class MyGame(arcade.Window):
         self.player4.center_x = 3 * screen_w / 4 - 100
         self.player_list.append(self.player4)
 
+        self.physics_list = []
         for player in self.player_list:
             player.center_y = start_height
             player.change_y = -10
+            self.physics_list.append(arcade.PhysicsEnginePlatformer(player, self.player_list , gravity_constant = gravity))
+
 
     def on_draw(self):
         #render the screen
@@ -78,11 +86,12 @@ class MyGame(arcade.Window):
         #called whenever key is pressed
         if key == arcade.key.UP:
             for player in self.player_list:
-                player.change_y = 10
-    def on_key_release(self, key, modifiers):
-        if key == arcade.key.UP:
-            for player in self.player_list:
-                player.change_y = -10
+                player.change_y = jump_speed
+
+    # def on_key_release(self, key, modifiers):
+        # if key == arcade.key.UP:
+        #     for player in self.player_list:
+        #         player.change_y = 0
 
     def update(self, delta_time):
         #game logic
@@ -96,6 +105,8 @@ class MyGame(arcade.Window):
             #move side to side
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
+        for engine in self.physics_list:
+            engine.update()
         self.ball.update()
         if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40 or
             self.ball.center_x > screen_w -10 or self.ball.center_x <5):
@@ -150,8 +161,8 @@ def square_goal(top_left_x, top_left_y):
 
 def main():
     game = MyGame(screen_w, screen_h)
-    game.setup()
     game.start_snowfall()
+    game.setup()
     arcade.run()
 
 if __name__ == '__main__':
