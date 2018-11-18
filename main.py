@@ -103,19 +103,18 @@ class MyGame(arcade.Window):
                 if player.center_y == 80:
                     player.update_animation(player,1)
                     player.change_angle = -2
+                    player.velocity = [.00000001*math.sin(math.radians(player.angle)), math.cos(math.radians(player.angle))]
                     player.change_y = jump_speed
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
                 player.update_animation(player,0)
+                player.velocity = [0,0]
                 player.change_angle = 0
                 if abs(player.angle) >= 30:
                     player.angle = 0
-                # player.angle = 0
-                # while player.angle != 0:
-                #     player.change_angle = -2
-                # player.change_angle = 0
+
     def update(self, delta_time):
         #game logic
         #animate snowflakes falling
