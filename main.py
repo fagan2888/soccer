@@ -100,16 +100,19 @@ class MyGame(arcade.Window):
         #called whenever key is pressed
         if key == arcade.key.UP:
             for player in self.player_list:
-                player.update_animation(player,1)
-                player.change_angle = -2
-                player.change_y = jump_speed
+                if player.center_y == 80:
+                    player.update_animation(player,1)
+                    player.change_angle = -2
+                    player.change_y = jump_speed
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
                 player.update_animation(player,0)
                 player.change_angle = 0
-                player.angle = 0
+                if abs(player.angle) >= 30:
+                    player.angle = 0
+                # player.angle = 0
                 # while player.angle != 0:
                 #     player.change_angle = -2
                 # player.change_angle = 0
