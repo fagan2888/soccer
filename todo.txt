@@ -3,6 +3,7 @@ implement soccer physics game and physics of players and ball with arcade module
 find a way to switch character images to show motion without lag
 implement Sprite.change_angle and Sprite.update_animation
 find a way to make players slowly wobble back to balance after going past 30 degrees
+make boundaries
 
 multiplayer aspect:
 player 1 is the host - player 2 connects to player 1's port via ip

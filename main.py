@@ -103,7 +103,8 @@ class MyGame(arcade.Window):
                 if player.center_y == 80:
                     player.update_animation(player,1)
                     player.change_angle = -2
-                    player.velocity = [.00000001*math.sin(math.radians(player.angle)), math.cos(math.radians(player.angle))]
+                    player.velocity = [.000001, 1]
+                    # player.velocity = [.00000001*math.sin(math.radians(player.angle)), math.cos(math.radians(player.angle))]
                     player.change_y = jump_speed
 
     def on_key_release(self, key, modifiers):
@@ -127,8 +128,8 @@ class MyGame(arcade.Window):
             #move side to side
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
-        for engine in self.physics_list:
-            engine.update()
+        # for engine in self.physics_list:
+        #     engine.update()
         self.ball.update()
         if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40 or
             self.ball.center_x > screen_w -10 or self.ball.center_x <5):
@@ -136,8 +137,14 @@ class MyGame(arcade.Window):
         self.player_list.update()
         for player in self.player_list:
             if player.center_y <= 80:
-                player.change_y = 0
+                player.velocity = [0,0]
                 player.center_y = 80
+            if player.center_x >= screen_w - 200:
+                player.velocity = [0,0]
+                player.center_x = screen_w-200
+            if player.center_x <= 200:
+                player.velocity = [0,0]
+                player.center_x = 200
 
 #BACKGROUND
 grass_height = screen_h / 4
