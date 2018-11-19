@@ -30,14 +30,20 @@ class MyGame(arcade.Window):
 
             #add snowflake to snowflake_list
             self.snowflake_list.append(snowflake)
-
-    def setup(self):
-        #set up game here
+    def drop_ball(self):
         self.ball = arcade.Sprite('images/soccer-ball.png', .1)
         self.ball.center_x = screen_w / 2
         self.ball.center_y = screen_h / 3
+        direction = random.randint(0, 10)
+        if direction // 5 > 0:
+            self.ball.change_x = -3
+        else:
+            self.ball.change_x = 3
         self.ball.change_y = -10
 
+    def setup(self):
+        #set up game here
+        self.drop_ball()
         #PLAYERS
         start_height = screen_h / 3
         #Player 1
@@ -48,7 +54,6 @@ class MyGame(arcade.Window):
         self.player1.textures = [arcade.load_texture('kenney/PNG/Player/Poses/player_stand.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Player/Poses/player_kick.png', 0, 0, 80, 110)]
         self.player1.update_animation = update_animation
-        self.player1.collision_radius = 200
         self.player_list.append(self.player1)
         #Player 2
         self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
@@ -57,8 +62,6 @@ class MyGame(arcade.Window):
         self.player2.textures = [arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 0, 0, 80, 110), \
             arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_kick.png', 0, 0, 80, 110)]
         self.player2.update_animation = update_animation
-        self.player2.collision_radius = 200
-
         self.player_list.append(self.player2)
         #Player 3
         self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
@@ -67,8 +70,6 @@ class MyGame(arcade.Window):
         self.player3.textures = [arcade.load_texture('kenney/PNG/Female/Poses/female_stand_rev.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Female/Poses/female_kick_rev.png', 0, 0, 80, 110)]
         self.player3.update_animation = update_animation
-        self.player3.collision_radius = 200
-
         self.player_list.append(self.player3)
         #Player 4
         self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 1.2)
@@ -77,7 +78,6 @@ class MyGame(arcade.Window):
         self.player4.textures = [arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_kick_rev.png', 0, 0, 80, 110)]
         self.player4.update_animation = update_animation
-        self.player4.collision_radius = 200
         self.player_list.append(self.player4)
 
         self.physics_list = []
@@ -108,26 +108,23 @@ class MyGame(arcade.Window):
             for player in self.player_list:
                 if player.center_y == 80:
                     player.update_animation(player,1)
-                    # player.change_angle = -2
-                    # player.velocity = [.00000001*math.sin(math.radians(player.angle)), math.cos(math.radians(player.angle))]
                     player.change_y = jump_speed
-        if key == arcade.key.RIGHT:
-            for player in self.player_list:
-                player.update_animation(player,1)
-                player.change_x = 1
-        if key == arcade.key.LEFT:
-            for player in self.player_list:
-                player.update_animation(player,1)
-                player.change_x = -1
-
+        # if key == arcade.key.RIGHT:
+        #     for player in self.player_list:
+        #         player.update_animation(player,1)
+        #         player.change_x = 1
+        # if key == arcade.key.LEFT:
+        #     for player in self.player_list:
+        #         player.update_animation(player,1)
+        #         player.change_x = -1
 
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
                 player.update_animation(player,0)
-                player.change_angle = 0
-                if abs(player.angle) >= 30:
-                    player.angle = 0
+                # player.change_angle = 0
+                # if abs(player.angle) >= 30:
+                #     player.angle = 0
 
     def update(self, delta_time):
         #game logic
@@ -142,9 +139,15 @@ class MyGame(arcade.Window):
             snowflake.x += snowflake.speed * math.cos(snowflake.angle) * delta_time
             snowflake.angle += delta_time
         self.ball.update()
-        if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40 or
-            self.ball.center_x > screen_w -10 or self.ball.center_x <5):
+        if self.ball.center_x > screen_w - 140 or self.ball.center_x < 140:
+            #GOAL MECHANISM
+            if self.ball.center_y < 300:
+                #GOAL
+                pass
+            self.drop_ball()
+        if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40):
             self.ball.change_y = 0
+        # self.ball.change_x = 5
         for engine in self.physics_list:
             engine.update()
         self.player_list.update()
@@ -157,6 +160,8 @@ class MyGame(arcade.Window):
                 player.center_x = screen_w-200
             if player.center_x <= 200:
                 player.center_x = 200
+            # if len(arcade.check_for_collision_with_list(player, self.player_list))>0:
+            #     player.change_x = 0
 
 #BACKGROUND
 grass_height = screen_h / 4

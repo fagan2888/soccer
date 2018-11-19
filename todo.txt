@@ -4,6 +4,7 @@ find a way to switch character images to show motion without lag
 implement Sprite.change_angle and Sprite.update_animation
 find a way to make players slowly wobble back to balance after going past 30 degrees
 make boundaries
+the physics engine collisions checker is really buggy so dont add horizontal movement 
 
 multiplayer aspect:
 player 1 is the host - player 2 connects to player 1's port via ip
