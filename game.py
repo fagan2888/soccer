@@ -2,14 +2,25 @@ import arcade, math, random, pymunk
 
 screen_w, screen_h = 1000, 600
 
+class PhysicsSprite(arcade.Sprite):
+    def __init__(self, pymunk_shape, filename):
+        super().__init__(filename, center_x=pymunk_shape.body.position.x, center_y=pymunk_shape.body.position.y)
+        self.pymunk_shape = pymunk_shape
+
 class MyGame(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
     def drop_ball(self):
         #not sure how this will work with pymunk
+        self.ball = arcade.Sprite('images/soccer-ball.png', .1)
+        self.ball.change_angle = .1
+        # self.ball = pymunk.Body()
+
         pass
+
     def setup(self):
+        #BALL
         self.drop_ball()
         #PLAYERS
         spawn_height = screen_h / 3
@@ -55,6 +66,7 @@ class MyGame(arcade.Window):
         square_goal(screen_w - 160, 320)
         # self.ball.draw()
         self.player_list.draw()
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
@@ -62,11 +74,15 @@ class MyGame(arcade.Window):
                     player.update_animation(player, 1)
                     #ADD PYMUNK THING TO MAKE THEM JUMP
                     # player.change_y = jump_speed
+
     def on_key_release(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
                 player.update_animation(player, 0)
+
     def update(self, delta_time):
+        space.step(delta_time)
+        #BALL STUFF
         # self.ball.update()
         # if self.ball.center_x > screen_w - 140 or self.ball.center_x < 140:
         #     #GOAL MECHANISM
@@ -77,6 +93,8 @@ class MyGame(arcade.Window):
         # if (self.ball.center_y > screen_h - 10 or self.ball.center_y < 40):
         #     self.ball.change_y = 0
         #     self.player_list.update()
+
+        #PLAYER STUFF
         for player in self.player_list:
             if player.center_y >= 200:
                 player.center_y = 80
@@ -88,6 +106,9 @@ class MyGame(arcade.Window):
                 player.center_x = 200
 
 #PHYSICS PYMUNK
+space = pymunk.Space()
+space.gravity = (0, -900)
+
 #gravity and jump mechanism for players
 #collision for ball
 #kick mechanism for players
