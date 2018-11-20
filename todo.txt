@@ -1,16 +1,11 @@
-soccer physics - multiplayer
-implement soccer physics game and physics of players and ball with arcade module
-find a way to switch character images to show motion without lag
-implement Sprite.change_angle and Sprite.update_animation
-find a way to make players slowly wobble back to balance after going past 30 degrees
-make boundaries
-the physics engine collisions checker is really buggy so dont add horizontal movement 
+Physics problems I need to find out how to solve:
+1. draw boundaries around the player so we can detect collisions
+   https://github.com/viblo/pymunk/blob/master/examples/using_sprites.py
+2. how to calculate force applied to ball - kicking animation is just 2 different
+   images so how do I use pymunk to show how much force is being applied
+3. horizontal motion? implement this last because figuring out how kicking the ball
+   is more important
 
-multiplayer aspect:
-player 1 is the host - player 2 connects to player 1's port via ip
-
-maybe use https://github.com/chr15m/PodSixNet/?
-https://www.youtube.com/watch?v=DIPZoZheMTo
-
-both players can control their individual players separately? need better multiplayer
-mechanics
+ Problems with multiplayer aspect:
+ 1. Figure out what additional functionality multiplayers grants us
+ 2. Basic hosting tutorial: https://www.youtube.com/watch?v=DIPZoZheMTo
