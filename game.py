@@ -11,6 +11,20 @@ class MyGame(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
 
+        #PHYSICS PYMUNK
+        self.space = pymunk.Space()
+        self.space.gravity = (0, -900)
+
+        #Create the floor
+        self.floor_height = 80
+        floor = pymunk.Body(body_type = pymunk.Body.STATIC)
+        shape = pymunk.Segment(floor, [0, self.floor_height], [screen_w, self.floor_height], 0)
+        #maybe don't need friction?
+        shape.friction = 10
+        self.space.add(shape)
+
+
+
     def drop_ball(self):
         #not sure how this will work with pymunk
         self.ball = arcade.Sprite('images/soccer-ball.png', .1)
@@ -70,7 +84,7 @@ class MyGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:
             for player in self.player_list:
-                if player.center_y == 80:
+                if player.center_y == self.floor_height:
                     player.update_animation(player, 1)
                     #ADD PYMUNK THING TO MAKE THEM JUMP
                     # player.change_y = jump_speed
@@ -81,7 +95,7 @@ class MyGame(arcade.Window):
                 player.update_animation(player, 0)
 
     def update(self, delta_time):
-        space.step(delta_time)
+        self.space.step(delta_time)
         #BALL STUFF
         # self.ball.update()
         # if self.ball.center_x > screen_w - 140 or self.ball.center_x < 140:
@@ -97,17 +111,14 @@ class MyGame(arcade.Window):
         #PLAYER STUFF
         for player in self.player_list:
             if player.center_y >= 200:
-                player.center_y = 80
-            if player.center_y <= 80:
-                player.center_y = 80
+                player.center_y = self.floor_height
+            if player.center_y <= self.floor_height:
+                player.center_y = self.floor_height
             if player.center_x >= screen_w - 200:
                 player.center_x = screen_w-200
             if player.center_x <= 200:
                 player.center_x = 200
 
-#PHYSICS PYMUNK
-space = pymunk.Space()
-space.gravity = (0, -900)
 
 #gravity and jump mechanism for players
 #collision for ball
