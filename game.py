@@ -1,6 +1,9 @@
 import arcade, math, random, pymunk
 
+#CONSTANTS
 screen_w, screen_h = 1000, 600
+goal_1_x, goal_1_y = 20, 320
+goal_2_x, goal_2_y = screen_w - 160, 320
 
 class PhysicsSprite(arcade.Sprite):
     def __init__(self, pymunk_shape, filename):
@@ -22,8 +25,6 @@ class MyGame(arcade.Window):
         #maybe don't need friction?
         shape.friction = 10
         self.space.add(shape)
-
-
 
     def drop_ball(self):
         #not sure how this will work with pymunk
@@ -76,8 +77,8 @@ class MyGame(arcade.Window):
         arcade.start_render()
         draw_sky()
         draw_grass()
-        square_goal(20, 320)
-        square_goal(screen_w - 160, 320)
+        square_goal(goal_1_x, goal_1_y)
+        square_goal(goal_2_x, goal_2_y)
         # self.ball.draw()
         self.player_list.draw()
 
