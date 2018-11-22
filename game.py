@@ -4,6 +4,7 @@ import arcade, math, random, pymunk
 screen_w, screen_h = 1000, 600
 goal_1_x, goal_1_y = 20, 320
 goal_2_x, goal_2_y = screen_w - 160, 320
+gravity_y = -900
 
 class PhysicsSprite(arcade.Sprite):
     def __init__(self, pymunk_shape, filename):
@@ -16,7 +17,7 @@ class MyGame(arcade.Window):
 
         #PHYSICS PYMUNK
         self.space = pymunk.Space()
-        self.space.gravity = (0, -900)
+        self.space.gravity = (0, gravity_y)
 
         #Create the floor
         self.floor_height = 80
