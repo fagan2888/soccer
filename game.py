@@ -39,7 +39,7 @@ class MyGame(arcade.Window):
 
         #PHYSICS PYMUNK
         self.space = pymunk.Space()
-        self.space.gravity = (0, gravity_y)
+        self.space.gravity = 0, gravity_y
 
         #Create the floor
         self.floor_height = 80
@@ -82,7 +82,7 @@ class MyGame(arcade.Window):
         self.player2.update_animation = update_animation
         self.player_list.append(self.player2)
         #Player 3
-        self.player3 = PhysicsSprite('kenney/PNG/Female/Poses/female_stand_rev.png', center_x = screen_w * 0.60, center_y = screen_h, scale = 1.2)
+        self.player3 = PhysicsSprite('kenney/PNG/Female/Poses/female_stand_rev.png', center_x = screen_w * 0.60, center_y = spawn_height, scale = 1.2)
         # self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
         # self.player3.center_x = screen_w * .60
         # self.player3.center_y = spawn_height
@@ -138,7 +138,7 @@ class MyGame(arcade.Window):
 
         #PLAYER STUFF
         for player in self.player_list:
-            if player.center_y >= 200:
+            if player.center_y >= screen_h:
                 player.center_y = self.floor_height
             if player.center_y <= self.floor_height:
                 player.center_y = self.floor_height
@@ -147,6 +147,7 @@ class MyGame(arcade.Window):
             if player.center_x <= 200:
                 player.center_x = 200
 
+        self.space.step(1 / 60)
 
 #gravity and jump mechanism for players
 #collision for ball
