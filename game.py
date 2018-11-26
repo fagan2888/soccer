@@ -5,11 +5,33 @@ screen_w, screen_h = 1000, 600
 goal_1_x, goal_1_y = 20, 320
 goal_2_x, goal_2_y = screen_w - 160, 320
 gravity_y = -900
+default_mass = 1
+default_friction = 0.2
 
 class PhysicsSprite(arcade.Sprite):
-    def __init__(self, pymunk_shape, filename):
-        super().__init__(filename, center_x=pymunk_shape.body.position.x, center_y=pymunk_shape.body.position.y)
-        self.pymunk_shape = pymunk_shape
+    def __init__(self,
+                 filename,
+                 center_x=0,
+                 center_y=0,
+                 scale=1,
+                 mass=default_mass,
+                 moment=None,
+                 friction=default_friction,
+                 body_type=pymunk.Body.DYNAMIC):
+
+        super().__init__(filename, scale=scale, center_x=center_x, center_y=center_y)
+
+        width = self.texture.width * scale
+        height = self.texture.height * scale
+
+        if moment is None:
+            moment = pymunk.moment_for_box(mass, (width, height))
+
+        self.body = pymunk.Body(mass, moment, body_type=body_type)
+        self.body.position = pymunk.Vec2d(center_x, center_y)
+
+        self.shape = pymunk.Poly.create_box(self.body, (width, height))
+        self.shape.friction = friction
 
 class MyGame(arcade.Window):
     def __init__(self, width, height):
@@ -42,33 +64,37 @@ class MyGame(arcade.Window):
         spawn_height = screen_h / 3
         self.player_list = arcade.SpriteList()
         #Player 1
-        self.player1 = arcade.Sprite('kenney/PNG/Player/Poses/player_stand.png', 1.2)
-        self.player1.center_x = screen_w * .25
-        self.player1.center_y = spawn_height
+        self.player1 = PhysicsSprite('kenney/PNG/Player/Poses/player_stand.png', center_x = screen_w * 0.25, center_y = spawn_height, scale = 1.2)
+        # self.player1 = arcade.Sprite('kenney/PNG/Player/Poses/player_stand.png', 1.2)
+        # self.player1.center_x = screen_w * .25
+        # self.player1.center_y = spawn_height
         self.player1.textures = [arcade.load_texture('kenney/PNG/Player/Poses/player_stand.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Player/Poses/player_kick.png', 0, 0, 80, 110)]
         self.player1.update_animation = update_animation
         self.player_list.append(self.player1)
         #Player 2
-        self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
-        self.player2.center_x = screen_w * .40
-        self.player2.center_y = spawn_height
+        self.player2 = PhysicsSprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', center_x = screen_w * 0.40, center_y = spawn_height, scale = 1.2)
+        # self.player2 = arcade.Sprite('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 1.2)
+        # self.player2.center_x = screen_w * .40
+        # self.player2.center_y = spawn_height
         self.player2.textures = [arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_stand.png', 0, 0, 80, 110), \
             arcade.load_texture('kenney/PNG/Adventurer/Poses/adventurer_kick.png', 0, 0, 80, 110)]
         self.player2.update_animation = update_animation
         self.player_list.append(self.player2)
         #Player 3
-        self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
-        self.player3.center_x = screen_w * .60
-        self.player3.center_y = spawn_height
+        self.player3 = PhysicsSprite('kenney/PNG/Female/Poses/female_stand_rev.png', center_x = screen_w * 0.60, center_y = screen_h, scale = 1.2)
+        # self.player3 = arcade.Sprite('kenney/PNG/Female/Poses/female_stand_rev.png', 1.2)
+        # self.player3.center_x = screen_w * .60
+        # self.player3.center_y = spawn_height
         self.player3.textures = [arcade.load_texture('kenney/PNG/Female/Poses/female_stand_rev.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Female/Poses/female_kick_rev.png', 0, 0, 80, 110)]
         self.player3.update_animation = update_animation
         self.player_list.append(self.player3)
         #Player 4
-        self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 1.2)
-        self.player4.center_x = screen_w * .75
-        self.player4.center_y = spawn_height
+        self.player4 = PhysicsSprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', center_x = screen_w * 0.75, center_y = spawn_height, scale = 1.2)
+        # self.player4 = arcade.Sprite('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 1.2)
+        # self.player4.center_x = screen_w * .75
+        # self.player4.center_y = spawn_height
         self.player4.textures = [arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_stand_rev.png', 0, 0, 80, 110), \
                 arcade.load_texture('kenney/PNG/Zombie/Poses/zombie_kick_rev.png', 0, 0, 80, 110)]
         self.player4.update_animation = update_animation
