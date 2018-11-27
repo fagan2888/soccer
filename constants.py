@@ -5,5 +5,7 @@ goal_2_x, goal_2_y = screen_w - 160, 320
 gravity_y = -900
 default_mass = 1
 default_friction = 0.2
+spawn_height = 80
+
 
 grass_height = screen_h / 4

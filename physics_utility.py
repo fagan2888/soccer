@@ -25,6 +25,7 @@ class PhysicsSprite(arcade.Sprite):
         self.body = pymunk.Body(mass, moment, body_type=body_type)
         self.body.position = pymunk.Vec2d(center_x, center_y)
 
+        #need to change this to a polygon for 
         self.shape = pymunk.Poly.create_box(self.body, (width, height))
         self.shape.friction = friction
 

@@ -31,7 +31,6 @@ class MyGame(arcade.Window):
         #BALL
         self.drop_ball()
         #PLAYERS
-        spawn_height = screen_h / 3
         self.player_list = arcade.SpriteList()
         #Player 1
         self.player1 = PhysicsSprite('kenney/PNG/Player/Poses/player_stand.png', center_x = screen_w * 0.25, center_y = spawn_height, scale = 1.2)
