@@ -93,7 +93,7 @@ class MyGame(arcade.Window):
                 player.update_animation(player, 0)
 
     def update(self, delta_time):
-        self.space.step(delta_time)
+        # self.space.step(delta_time)
         #BALL STUFF
         # self.ball.update()
         # if self.ball.center_x > screen_w - 140 or self.ball.center_x < 140:
@@ -119,12 +119,15 @@ class MyGame(arcade.Window):
 
         self.space.step(1 / 60)
 
+        # Resync the sprites to the physics objects that shadow them
+        resync_physics_sprites(self.player_list)
+
+
 #gravity and jump mechanism for players
 #collision for ball
 #kick mechanism for players
 
 #BACKGROUND
-
 def draw_sky():
     arcade.draw_lrtb_rectangle_filled(0, screen_w, screen_h, grass_height, arcade.color.CAPRI)
 
